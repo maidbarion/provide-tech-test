@@ -1,20 +1,43 @@
 # Provide Interview Tests
 
+#### Summary of changes/fixes - 12/08/2024
+
+Hi guys, I've made quite a lot of changes to the original code, as well as fixed the bugs and added functionality as per instructions. I've included a few new NPM packages, so you will need to run 'npm install' before booting it up. It should run fine after that using 'npm start'. I'll list the changes below, just in case you require a reference, although I am aware that if you wish to go forward, I'll need to explain everything over a call. All the tasks have been completed as per instructions, and I'll list everything additional below.
+
+## Folder Structure
+I've reorganized the folder structure to be more in line with common practices - adding components, context, hooks, and styles. This is just general organization, which I find helps in being able to locate what you need.
+
+## Refactoring Products component
+I noticed that you were using a class component for <Products />, so I've refactored it to be a function component. This will improve reusability and readability. I also noticed that it was the only class component in the codebase. The only lifecycle method used was componentDidMount, so I replaced that with an effect that has a dependency list, achieving the same functionality.
+
+## Fetching data
+I separated the logic behind fetching data from the API into a reusable custom hook that takes a URL parameter. Separating this logic future-proofs the project and makes it easier to make additional API calls. I've also saved the response in Session Storage to prevent unnecessary repeat calls. The data returned is public and not sensitive, and it also allows us to reload the browser on the new ProductDetails page and enter IDs to be taken to the relevant page. This was handy for debugging.
+
+## State
+I've used the Context API to manage this, as the only state needing to persist across routes is productsInCart. This allows us to view cart details on the checkout page. I explored Redux, but since we have minimal state to manage, we don't require a centralized store, nor do we need any middleware. I contemplated using session storage to allow data retention on reloads, as it currently clears the cart. However, this solution would have been quite messy and seemed a bit out of scope for this project.
+
+## Performance
+I've utilized memoization in ProductCard, Cart, and Products for both functions and components. This is to prevent unnecessary re-renders of components and to help React avoid redeclaring functions on render. Additionally, using session storage for the API data will prevent unnecessary fetch requests.
+
+## Routing
+I've sorted the routing bug by reintroducing BrowserRouter to the App.js file. I've also added two new routes for products/:id and error. The error route is taken when an incorrect ID is entered for the new product details page, e.g., /products/219283. I'll go over the products/:id route in the next section.
+
+## Product Details Page
+This is the new page as per the requirements - it loads product data determined by a slug returned by the API (the ID). So once the data has loaded, /products/21 will load the cucumber page, etc. I achieved this by setting the route mentioned previously, then sending through parsed data from state determined by ID. Regarding the styling, I used Material-UI as the library was already present in the repo, and I didn't see the need to introduce anything new. I know you guys have bought a license too. It contains all the information you'd expect, but I also hooked up user reviews using the MUI Avatar and Rating components. I also used the date-fns library to format the date. I've been using it for years, and it's pretty solid.
+
+## Testing
+I added unit tests for the utility functions in /utils/, which should be an accurate representation of how I test. Sadly, I ran out of time as I've been away all weekend. I really wanted to add a more comprehensive suite - usually, in the development process, I'm pretty militant about this.
+
+## Git
+I spoke to Chris about this, but it appeared that I didn't have access to push a new branch to your remote repo. I also tried forking but ran into the same issue, so I'm pushing this to my GitHub so you can check it out. You'll be able to clone and run the project. However, if you need further access, please let me know. I also pushed the unchanged project first, so you can see the diff.
+
+## Fin
+
+Thanks guys, please let me know if you need anything additional, and if you wish to catch up for a call to go further into it.
+
 #### Please note that this code uses Node 14
 
 Please clone or fork this repository, complete the tasks in your cloned repository and then once completed share it with us.
-
-If you have trouble cloning the repository, please ensure you are not using SSH.
-
-### Cloning this Repo
-
-You should be able to clone the repository using: `git clone https://bitbucket.org/providefinanceltd/react.git`
-
-If you prefer to use GitHub, you can use this link which provides an exact copy of this repository: [GitHub Repository](https://github.com/DennisBold/provide-react)
-
-You should push the code to your own repository, either on GitHub or any other Git-based service. You will not have permission to push, branch or make changes to this repository. This was done so that your code remains private from other candidates.
-
-### Starting the App
 
 In your cloned repository, from the project directory, run:
 

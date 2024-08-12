@@ -1,18 +1,28 @@
-import { Route, Routes } from 'react-router-dom';
-import Home from './Home';
-import Layout  from "./Layout";
-import Products from "./Products";
-import Checkout from "./Checkout";
+import { Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { AppProvider } from "./context/AppContext";
+import Home from "./components/Home";
+import Layout from "./components/Layout";
+import Products from "./components/Products";
+import Checkout from "./components/Checkout";
+import ProductNotFound from "./components/ProductNotFound";
+import ProductDetails from "./components/ProductDetails";
 
 function App() {
   return (
-      <Routes>
+    <AppProvider>
+      <BrowserRouter>
+        <Routes>
           <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="products" element={<Products />} />
-              <Route path="checkout" element={<Checkout />} />
+            <Route index element={<Home />} />
+            <Route path="products" element={<Products />} />
+            <Route path="products/:id" element={<ProductDetails />} />
+            <Route path="checkout" element={<Checkout />} />
+            <Route path="error" element={<ProductNotFound />} />
           </Route>
-      </Routes>
+        </Routes>
+      </BrowserRouter>
+    </AppProvider>
   );
 }
 
